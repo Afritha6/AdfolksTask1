@@ -40,19 +40,20 @@ def add_topic():
     except Exception as e:
         return jsonify({"Error 409": "Invalid Request, please try again."})
         
-@app.route("/topic/<int:id>/comment", methods = ["POST"])
-def add_comment():
+@app.route("/topics/<int:id>/comment", methods=["PUT"])
+def update_comment(id):
+
+    updtae_comment = Topic.query.get_or_404(int(id))
+
     try:
         commment = request.json['commment']
 
-        new_comment = Topic(commment=commment)
-        
-        db.session.add(new_comment)
+        updtae_comment.commment = commment
         db.session.commit()
-
-        return topic_schema.jsonify(new_comment)
     except Exception as e:
-        return jsonify({"Error 409": "Invalid Request, please try again."})
+        return jsonify({"Error": "Invalid request, please try again."})
+        
+    return topic_schema.jsonify(updtae_comment) 
         
 
 @app.route("/topic", methods = ["GET"])
