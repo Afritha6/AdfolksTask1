@@ -24,7 +24,7 @@ class TopicSchema(ma.Schema):
 
 # instantiate schema objects for todolist and todolists
 topic_schema = TopicSchema(many=False)
-topic_schemas = TopicSchema(many=True)
+topics_schemas = TopicSchema(many=True)
 
 @app.route("/topic", methods = ["POST"])
 def add_topic():
@@ -40,6 +40,13 @@ def add_topic():
     except Exception as e:
         return jsonify({"Error 409": "Invalid Request, please try again."})
         
+
+@app.route("/topic", methods = ["GET"])
+def get_topic():
+    get_topic = Topic.query.all()
+    result_set = topics_schemas.dump(get_topic)
+    return jsonify(result_set)
+
 
 
 if __name__ == "__main__":
