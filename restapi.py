@@ -47,6 +47,11 @@ def get_topic():
     result_set = topics_schemas.dump(get_topic)
     return jsonify(result_set)
 
+@app.route("/topic/<int:id>", methods=["GET"])
+def get_specific_topic(id):
+    specific_topic = Topic.query.get_or_404(int(id))
+    return topic_schema.jsonify(specific_topic)
+
 
 
 if __name__ == "__main__":
