@@ -43,7 +43,7 @@ def add_topic():
 @app.route("/topic/<int:id>/comment", methods=["PUT"])
 def update_comment(id):
 
-    updtae_comment = Topic.query.get_or_404(int(id))
+    updtae_comment = Topic.query.get(int(id))
 
     try:
         commment = request.json['commment']
@@ -64,14 +64,14 @@ def get_topic():
 
 @app.route("/topic/<int:id>", methods=["GET"])
 def get_specific_topic(id):
-    specific_topic = Topic.query.get_or_404(int(id))
+    specific_topic = Topic.query.get(int(id))
     return topic_schema.jsonify(specific_topic)
 
 
 @app.route("/topic/<int:id>", methods=["PUT"])
 def update_topic(id):
 
-    updtae_topic = Topic.query.get_or_404(int(id))
+    updtae_topic = Topic.query.get(int(id))
 
     try:
         topic_name = request.json['topic_name']
@@ -82,6 +82,13 @@ def update_topic(id):
         return jsonify({"Error": "Invalid request, please try again."})
         
     return topic_schema.jsonify(updtae_topic) 
+
+@app.route("/topic/<int:id>", methods=["DELETE"])
+def delete_topic(id):
+    dele = Topic.query.get(int(id))
+    db.session.delete(dele)
+    db.session.commit()
+    return jsonify({"Success" : "deleted."})
 
 if __name__ == "__main__":
     app.run(debug = True)
