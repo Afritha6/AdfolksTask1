@@ -9,6 +9,8 @@ class TestAPI(unittest.TestCase):
 
     expected_result =  {'commment': None, 'id': 9, 'topic_name': 'dummydata2'}
 
+    update_data = {'commment': None, 'id': 9, 'topic_name': 'dummydataupdation'}
+
 
     def test_1_get_all_topics(self):
         resp = requests.get(self.URL)
@@ -30,10 +32,18 @@ class TestAPI(unittest.TestCase):
         print("Test 3 completed")
 
 
+    def test_4_update(self):
+        resp=requests.put(self.URL + '/9', json=self.update_data)
+        self.assertEqual(resp.json()['commment'],self.update_data['commment'])
+        self.assertEqual(resp.json()['topic_name'],self.update_data['topic_name'])
+        print("Task 4 is completed")
+
+
 if __name__=="__main__":
     tester = TestAPI()
 
     tester.test_1_get_all_topics()
-    tester.test_2_post_topic()
+    # tester.test_2_post_topic()
     tester.test_3_get_specific_topic()
+    tester.test_4_update()
 
